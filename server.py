@@ -59,14 +59,14 @@ def attributes():
 
 #return PDF
 @app.route('/report')
-def french():
+def report():
     try:
         return send_file('Report.pdf', download_name='Report.pdf')
     except Exception as e:
         return str(e)
 
 #DB routes
-app.route('/login', methods=["POST"])
+@app.route('/login', methods=["POST"])
 def create_token():
     email = request.json.get("email", None)
     password = request.json.get("password", None)
