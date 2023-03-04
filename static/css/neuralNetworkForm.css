@@ -1,0 +1,102 @@
+/* Reset default margin and padding */
+* {
+    margin: 0;
+    padding: 0;
+  }
+  
+  /* Set font size and background color */
+  body {
+    font-size: 16px;
+    background-color: #fafafa;
+  }
+  
+  /* Style the page header */
+  h1 {
+    font-size: 3rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  /* Style the form */
+  form {
+    max-width: 30rem;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.5rem;
+    padding: 2rem;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+  }
+  
+  /* Style the form fields */
+  label {
+    display: block;
+    font-size: 1.2rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+  }
+  
+  select, input[type="range"], input[type="number"], input[type="text"] {
+    width: 100%;
+    font-size: 1.2rem;
+    padding: 0.5rem;
+    border: 1px solid #dbdbdb;
+    border-radius: 0.3rem;
+    margin-bottom: 1.5rem;
+  }
+  
+  select {
+    appearance: none;
+    background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAA90lEQVR42pWTSw6AIAwD0//9/AgdFbBew+ypQ2JBlHsxFS0EpCjLmkx3qLDBM+gyAvwkDyM+RvR8CJfBmoZcAWzbt1G31pH8OfItLrLrFWrEABrHew+jP8QdsiIHt9Bl+D/cn5U5DD8QAAAABJRU5ErkJggg==) no-repeat right center/1rem;
+    padding-right: 2rem;
+  }
+  
+  input[type="range"] {
+   
+    width: 100%;
+    height: 1rem;
+    border-radius: 0.5rem;
+    background-color: #dbdbdb;
+    margin-bottom: 1.5rem;
+  }
+  
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 50%;
+    background-color: #3897f0;
+    cursor: pointer;
+  }
+  
+  input[type="number"], input[type="text"] {
+    text-align: center;
+  }
+  
+  /* Style the submit button */
+  button[type="submit"] {
+    display: block;
+    width: 100%;
+    background-color: #3897f0;
+    color: #ffffff;
+    border: none;
+    border-radius: 0.3rem;
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding: 0.5rem;
+    margin-top: 1.5rem;
+    cursor: pointer;
+  }
+  
+  button[type="submit"]:hover {
+    background-color: #1877b6;
+  }
+  
+  /* Style the form error message */
+  .error {
+    color: red;
+    font-size: 1
+  }  

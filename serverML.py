@@ -91,7 +91,75 @@ def final():
     loaded_model = pickle.load(open('finalized_model.sav', 'rb'))
     return jsonify('Accuracy of FINAL classifier on TESTING set: {:.2f}'.format(loaded_model.score(X_test, y_test)))
    
-     
+
+
+#dynamic route for user interaction with datasets, solvers selection
+# For iris dataset
+from sklearn.datasets import load_iris
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import accuracy_score
+from sklearn.neural_network import MLPClassifier
+
+# Load iris dataset
+iris = load_iris()
+X_iris, y_iris = iris.data, iris.target
+X_iris_train, X_iris_test, y_iris_train, y_iris_test = train_test_split(X_iris, y_iris, test_size=0.2, random_state=42)
+
+# For breast cancer dataset
+from sklearn.datasets import load_breast_cancer
+
+# Load breast cancer dataset
+breast_cancer = load_breast_cancer()
+X_bc, y_bc = breast_cancer.data, breast_cancer.target
+X_bc_train, X_bc_test, y_bc_train, y_bc_test = train_test_split(X_bc, y_bc, test_size=0.2, random_state=42)
+
+# For digits dataset
+from sklearn.datasets import load_digits
+
+# Load digits dataset
+digits = load_digits()
+X_digits, y_digits = digits.data, digits.target
+X_digits_train, X_digits_test, y_digits_train, y_digits_test = train_test_split(X_digits, y_digits, test_size=0.2, random_state=42)
+
+@app.route('/nn_classification', methods=['POST'])
+def nn_classification():
+
+    # Load data from JSON request
+    #request_data = request.get_json()
+    #dataset = request_data['dataset']
+    #solver = request_data['solver']
+    #regularization_term = float(request_data['reg_term'])
+    dataset = request.form['dataset']
+    solver = request.form['solver']
+    regularization_term = float(request.form['alpha'])
+    # Load dataset
+    if dataset == 'iris':
+        X_train, X_test, y_train, y_test = X_iris_train, X_iris_test, y_iris_train, y_iris_test
+    elif dataset == 'breast_cancer':
+        X_train, X_test, y_train, y_test = X_bc_train, X_bc_test, y_bc_train, y_bc_test
+    elif dataset == 'digits':
+        X_train, X_test, y_train, y_test = X_digits_train, X_digits_test, y_digits_train, y_digits_test
+    else:
+        return 'Invalid dataset'
+
+   
+
+    # Train neural network
+    #hidden_layer_sizes = (layer_sizes[i] for i in range(n_layers))
+    hidden_layer_sizes=[10,5]
+    clf = MLPClassifier(hidden_layer_sizes=hidden_layer_sizes, max_iter=1000, alpha=regularization_term, solver=solver, verbose=10, random_state=42)
+    clf.fit(X_train, y_train)
+
+    # Evaluate accuracy
+    y_pred = clf.predict(X_test)
+    accuracy = accuracy_score(y_test, y_pred)
+
+    return jsonify({'accuracy': accuracy})
+
+@app.route('/nnet',methods=["GET"])
+def neuralNetworkFormHandler():
+    return render_template('neuralNetworkForm.html')
+    
 
 if __name__=="__main__":
     app.run()

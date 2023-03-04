@@ -130,9 +130,20 @@ def template():
 def errHandler(e):
     return redirect("template.html", code=404)
 
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    if request.method == 'GET':
+        return render_template('contact.html')
+    elif request.method == 'POST':
+        name = request.form['name']
+        email = request.form['email']
+        message = request.form['message']
+        # do something with the form data
+        return 'Thanks for your message!'
+
 
 if __name__=="__main__":
-    app.run()
+    app.run(port=5001)
    
 
    
