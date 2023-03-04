@@ -9,12 +9,6 @@ from flask_jwt_extended import create_access_token,get_jwt,get_jwt_identity, \
                                unset_jwt_cookies, jwt_required, JWTManager
 
 from flask import send_file
-import pandas as pd
-from sklearn.model_selection import train_test_split
-from sklearn.linear_model import LogisticRegression
-from sklearn.tree import DecisionTreeClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.preprocessing import MinMaxScaler
 
 
 app = Flask(__name__)
@@ -34,7 +28,7 @@ def attributes():
 @app.route('/french')
 def french():
     try:
-        return send_file('C:/Users/Lenovo/Desktop/thesis/doc+src/ML/Report.pdf', download_name='Report.pdf')
+        return send_file('Report.pdf', download_name='Report.pdf')
     except Exception as e:
         return str(e)
 
