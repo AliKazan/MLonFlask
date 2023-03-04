@@ -18,6 +18,11 @@ from sklearn.neighbors import KNeighborsClassifier
 from sklearn.preprocessing import MinMaxScaler
 import pickle
 
+
+from io import BytesIO
+from reportlab.pdfgen import canvas
+
+
 app = Flask(__name__)
 
 bcrypt = Bcrypt(app)
@@ -47,6 +52,7 @@ scaler = MinMaxScaler()
 #apply the scalar to the sets
 X_train = scaler.fit_transform(X_train)
 X_test = scaler.transform(X_test)
+
 
 #routes
 @app.route('/')
@@ -121,6 +127,14 @@ digits = load_digits()
 X_digits, y_digits = digits.data, digits.target
 X_digits_train, X_digits_test, y_digits_train, y_digits_test = train_test_split(X_digits, y_digits, test_size=0.2, random_state=42)
 
+# For wine dataset
+from sklearn.datasets import load_wine
+
+# Load digits dataset
+wine = load_wine()
+X_wine, y_wine = wine.data, wine.target
+X_wine_train, X_wine_test, y_wine_train, y_wine_test = train_test_split(X_wine, y_wine, test_size=0.2, random_state=42)
+
 @app.route('/nn_classification', methods=['POST'])
 def nn_classification():
 
@@ -139,6 +153,8 @@ def nn_classification():
         X_train, X_test, y_train, y_test = X_bc_train, X_bc_test, y_bc_train, y_bc_test
     elif dataset == 'digits':
         X_train, X_test, y_train, y_test = X_digits_train, X_digits_test, y_digits_train, y_digits_test
+    elif dataset == 'wine':
+        X_train, X_test, y_train, y_test = X_wine_train, X_wine_test, y_wine_train, y_wine_test
     else:
         return 'Invalid dataset'
 
@@ -154,7 +170,32 @@ def nn_classification():
     y_pred = clf.predict(X_test)
     accuracy = accuracy_score(y_test, y_pred)
 
-    return jsonify({'accuracy': accuracy})
+    # Create PDF report
+    buffer = BytesIO()
+    report = canvas.Canvas(buffer)
+
+    # Write report header
+    report.setFont('Helvetica-Bold', 16)
+    report.drawString(100, 700, 'Neural Network Classification Report')
+    report.line(100, 690, 500, 690)
+
+    # Write selected values
+    report.setFont('Helvetica', 12)
+    report.drawString(100, 650, f'Dataset: {dataset}')
+    report.drawString(100, 630, f'Solver: {solver}')
+    report.drawString(100, 610, f'Alpha: {regularization_term:.4f}')
+
+    # Write accuracy
+    report.setFont('Helvetica-Bold', 14)
+    report.drawString(100, 570, f'Accuracy: {accuracy:.2f}')
+
+    # Save report and return it as a download
+    report.save()
+    buffer.seek(0)
+    return send_file(buffer, download_name='report.pdf')
+    
+    # Render form template for GET request
+    
 
 @app.route('/nnet',methods=["GET"])
 def neuralNetworkFormHandler():

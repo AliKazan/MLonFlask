@@ -9,9 +9,10 @@
     <form method="POST" action="{{ url_for('nn_classification') }}">
       <label for="dataset">Select a dataset:</label>
       <select name="dataset" id="dataset">
-        <option value="iris">Iris</option>
-        <option value="breast_cancer">Breast Cancer</option>
-        <option value="digits">Digits</option>
+        <option title="The Iris dataset contains measurements of the sepal length, sepal width, petal length, and petal width of 150 iris flowers from three different species. The goal is to predict the species of each flower based on these measurements." value="iris">Iris</option>
+        <option title="Breast Cancer Wisconsin (Diagnostic) Dataset" value="breast_cancer">Breast Cancer</option>
+        <option title="The Digits dataset contains images of handwritten digits from 0 to 9. The goal is to classify each image based on the digit it represents."  value="digits">Digits</option>
+        <option value="wine" title="The Wine dataset contains measurements of 13 chemical compounds found in three different types of wine. The goal is to predict the type of wine based on these measurements.">Wine</option>
       </select>
       <br>
       <br>
