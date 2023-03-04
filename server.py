@@ -13,7 +13,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin
 from sqlalchemy.sql import func
 
-app = Flask(__name__)
+app = Flask(__name__,template_folder='./templates')
 bcrypt = Bcrypt(app)
 cors = CORS(app, resources={r"*": {"origins": "*"}})
 app.config['SECRET_KEY'] = 'hjshjhdjah kjshkjdhjs'
@@ -25,7 +25,7 @@ db = SQLAlchemy()
 DB_NAME = "database.db"
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///database.db'
 db.init_app(app)
-login_manager = LoginManager()
+#login_manager = LoginManager()
 
 
 class User(db.Model,UserMixin):
@@ -40,7 +40,7 @@ class User(db.Model,UserMixin):
     def get_passsword(self):
         return self._password
 #initialize          
-login_manager.init_app(app)
+#login_manager.init_app(app)
 def create_database(app):
     if not path.exists(DB_NAME):
        # db.create_all(app=app)  old
@@ -90,7 +90,7 @@ def logout():
     unset_jwt_cookies(response)
     print(response)
     return response 
-
+#get All users in the Database
 @app.route("/users",methods=["GET"])
 def getAccounts():
     #allUsers = User.query.all()
@@ -103,6 +103,7 @@ def getAccounts():
     response=jsonify(my_dict)
     return response
 
+#create a user and add it to the Database
 @app.route('/signup',methods=['POST'])
 def signup():
     #method edit to be post
@@ -119,7 +120,15 @@ def signup():
         print('@@@@@@@@@@NEW user added to db @@@@@@@@@@@')
         return {"msg": "Account created"}, 200    
 
+#render template with passed attribute
+@app.route('/template',methods=["GET"])
+def template():
+    return render_template('template.html', utc_dt=datetime.utcnow())
     
+#Handle Error then redirect
+@app.errorhandler(404)
+def errHandler(e):
+    return redirect("template.html", code=404)
 
 
 if __name__=="__main__":
