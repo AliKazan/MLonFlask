@@ -55,7 +55,7 @@ X_test = scaler.transform(X_test)
 
 
 #routes
-@app.route('/')
+@app.route('/debug')
 def attributes():
     print(fruits.head())
     print("Connected")
@@ -197,7 +197,7 @@ def nn_classification():
     # Render form template for GET request
     
 
-@app.route('/nnet',methods=["GET"])
+@app.route('/',methods=["GET"])
 def neuralNetworkFormHandler():
     return render_template('neuralNetworkForm.html')
     
